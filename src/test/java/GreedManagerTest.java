@@ -13,9 +13,9 @@ public class GreedManagerTest {
         names.add("TestName");
         names.add("123");
         GreedManager game = new GreedManager(names);
-        int[] scores = new int[] {1, 1, 1, 5, 1};
+        int[] scores = new int[] {2, 3, 4, 6, 2};
         game.put("Anthony", scores);
         assertEquals(1, 1);
-        assertEquals((long) game.playerScores.get("Anthony"), 1150);
+        assertEquals((long) game.playerScores.get("Anthony"), 0);
     }
 }
