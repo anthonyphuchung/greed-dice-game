@@ -6,7 +6,7 @@ public class GreedManager {
     public static final int DICE_COUNT = 5; // Number of dice we're using.
     public static final int SIDES = 6; // Number of sides on the dice.
 
-    public Map<String, Integer> playerScores;
+    private Map<String, Integer> playerScores;
 
     public GreedManager(Set<String> playerNames) {
         if (playerNames.size() < 2) {
@@ -32,18 +32,26 @@ public class GreedManager {
                 score += (1000 * numOfTriples) + (100 * remainder);
             } else if (i == 1) { // Roll of two
                 score += (200 * numOfTriples);
-            } else if (i == 2) {
+            } else if (i == 2) { // Roll of three
                 score += (300 * numOfTriples);
-            } else if (i == 3) {
+            } else if (i == 3) { // Roll of four
                 score += (400 * numOfTriples);
-            } else if (i == 4) {
+            } else if (i == 4) { // Roll of five
                 score += (500 * numOfTriples) + (50 * remainder);
-            } else {
+            } else { // Roll of 6
                 score += (600 * numOfTriples);
             }
         }
 
         playerScores.put(playerName, playerScores.get(playerName) + score);
+    }
+
+    public int get(String playerName) {
+        if (!playerScores.containsKey(playerName)) {
+//            throw new IllegalArgumentException("Given player does not exist in the current game!");
+            return -1;
+        }
+        return playerScores.get(playerName);
     }
 
     public void getWinner() {
