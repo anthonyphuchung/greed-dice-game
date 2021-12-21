@@ -60,6 +60,13 @@ public class GreedManagerTest {
         assertEquals(game.get("unknown player"), -1);
     }
 
+    @Test
+    public void testScores7() {
+        int[] scores = new int[] {2, 2, 2, 2, 5};
+        game.put("player 5", scores);
+        assertEquals(game.get("player 5"), 450);
+    }
+
     @Test (expected = IndexOutOfBoundsException.class)
     public void testInvalidScores1() {
         int[] scores = new int[] {1, -2, 3, 4, 3};

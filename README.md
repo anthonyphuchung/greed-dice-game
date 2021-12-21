@@ -3,7 +3,7 @@ Greed is a press-your-luck dice rolling game. In the game, the player rolls the 
 earn as many points as possible from the result. For the purpose of this game, 
 players are limited to a roll of five dice. The scoring method is as follows:
 * A single one (100 points)
-* A single five (500 points)
+* A single five (50 points)
 * Triple ones [1,1,1] (1000 points)
 * Triple twos [2,2,2] (200 points)
 * Triple threes [3,3,3] (300 points)

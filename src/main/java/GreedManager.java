@@ -57,37 +57,15 @@ public class GreedManager {
         } else if (diceValues.length != DICE_COUNT) {
             throw new IllegalArgumentException("Given diceValues did not roll the correct amount of dices!");
         }
+
         int score = 0;
-        int[] valueCount = new int[SIDES];
-        for (int diceValue : diceValues) {
-            if (diceValue <= 0 || SIDES < diceValue) {
-                throw new IndexOutOfBoundsException("Given diceValues contains an illegal dice value!");
-            }
-            valueCount[diceValue - 1]++;
-        }
+        int[] valueCount = getOccurences(diceValues);
 
         for (int i = 0; i < SIDES; i++) {
-            int numOfTriples = valueCount[i] / 3;
-            int remainder = valueCount[i] - (numOfTriples * 3);
-            if (i == 0) { // Roll of one
-                score += (1000 * numOfTriples) + (100 * remainder);
-            } else if (i == 1) { // Roll of two
-                score += (200 * numOfTriples);
-            } else if (i == 2) { // Roll of three
-                score += (300 * numOfTriples);
-            } else if (i == 3) { // Roll of four
-                score += (400 * numOfTriples);
-            } else if (i == 4) { // Roll of five
-                score += (500 * numOfTriples) + (50 * remainder);
-            } else { // Roll of 6
-                score += (600 * numOfTriples);
-            }
+            score += evaluateScore(i, valueCount);
         }
 
-        int playerIndex = indexOf(playerName);
-        Player player = players.get(playerIndex);
-        player.score += score;
-        Collections.sort(players);
+        updateLeaderboard(playerName, score);
     }
 
     /**
@@ -181,6 +159,51 @@ public class GreedManager {
             }
         }
         return -1;
+    }
+
+    /**
+     *
+     * @param diceValues
+     * @return
+     */
+    private int[] getOccurences(int[] diceValues) {
+        int[] valueCount = new int[SIDES];
+        for (int diceValue : diceValues) {
+            if (diceValue <= 0 || SIDES < diceValue) {
+                throw new IndexOutOfBoundsException("Given diceValues contains an illegal dice value!");
+            }
+            valueCount[diceValue - 1]++;
+        }
+        return valueCount;
+    }
+
+    private void updateLeaderboard(String playerName, int score) {
+        int playerIndex = indexOf(playerName);
+        Player player = players.get(playerIndex);
+        player.score += score;
+        Collections.sort(players);
+    }
+
+    private int evaluateScore(int roll, int[] valueCount) {
+        int numOfTriples = valueCount[roll] / 3;
+        int remainder = valueCount[roll] - (numOfTriples * 3);
+        if (roll == 0) { // Roll of one
+            return (1000 * numOfTriples) + (100 * remainder);
+        } else if (roll == 1) { // Roll of two
+            int score = (200 * numOfTriples);
+            if (numOfTriples == 1 && remainder == 1) {
+                score += 200;
+            }
+            return score;
+        } else if (roll == 2) { // Roll of three
+            return (300 * numOfTriples);
+        } else if (roll == 3) { // Roll of four
+            return (400 * numOfTriples);
+        } else if (roll == 4) { // Roll of five
+            return (500 * numOfTriples) + (50 * remainder);
+        } else { // Roll of 6
+            return (600 * numOfTriples);
+        }
     }
 
     /**
