@@ -6,10 +6,7 @@
  * The user can play an infinite number of rounds
  */
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class GreedMain {
 
@@ -84,22 +81,40 @@ public class GreedMain {
         for (String playerName : game.getPlayerNames()) {
             System.out.println("It is " + playerName + "'s turn! ");
 
-
-            int[] diceValues = new int[GreedManager.DICE_COUNT];
-            for (int i = 0; i < GreedManager.DICE_COUNT; i++) {
-                System.out.print("Dice " + (i + 1) + " value: ");
-                int diceValue = console.nextInt();
-                console.nextLine();
-                while (diceValue <= 0 || GreedManager.SIDES < diceValue) {
-                    System.out.println("A roll of " + diceValue + " is not possible!");
-                    System.out.println("Please input a valid value.");
-                    System.out.print("Dice " + (i + 1) + " value: ");
-                    diceValue = console.nextInt();
-                    console.nextLine();
-                }
-                diceValues[i] = diceValue;
+            System.out.println("Would you like to input your own dice values or generate random values?");
+            System.out.print("Press (1) to manually input values or (2) to generate random values: ");
+            String response = console.nextLine().trim();
+            while (!response.equals("1") && !response.equals("2")) {
+                System.out.println("Please answer with a (1) or (2)");
+                response = console.nextLine().trim();
             }
+            int[] diceValues = new int[GreedManager.DICE_COUNT];
 
+            if (response.equals("1")) {
+                for (int i = 0; i < GreedManager.DICE_COUNT; i++) {
+                    System.out.print("Dice " + (i + 1) + " value: ");
+                    int diceValue = console.nextInt();
+                    console.nextLine();
+                    while (diceValue <= 0 || GreedManager.SIDES < diceValue) {
+                        System.out.println("A roll of " + diceValue + " is not possible!");
+                        System.out.println("Please input a valid value.");
+                        System.out.print("Dice " + (i + 1) + " value: ");
+                        diceValue = console.nextInt();
+                        console.nextLine();
+                    }
+                    diceValues[i] = diceValue;
+                }
+            } else {
+                Random rand = new Random();
+                for (int i = 0; i < GreedManager.DICE_COUNT; i++) {
+                    System.out.print("Press any key to generate a random dice value: ");
+                    console.nextLine();
+                    int diceValue = rand.nextInt(GreedManager.SIDES) + 1;
+                    System.out.println("A roll of " + diceValue + " was generated!");
+                    diceValues[i] = diceValue;
+                }
+            }
+            System.out.println(playerName + " has rolled the following dice values: " + Arrays.toString(diceValues));
             game.put(playerName, diceValues);
         }
         System.out.println("Round " + round + " has finished!");
@@ -133,7 +148,7 @@ public class GreedMain {
         System.out.println("----------------------------------");
         sb.append(winners.get(0));
         for (int i = 1; i < winners.size(); i++) {
-            sb.append(", " + winners.get(i));
+            sb.append(", ").append(winners.get(i));
         }
         System.out.println(sb);
     }
