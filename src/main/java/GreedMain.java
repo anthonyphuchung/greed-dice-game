@@ -1,4 +1,5 @@
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -8,10 +9,16 @@ public class GreedMain {
         Scanner console = new Scanner(System.in);
         intro();
         GreedManager game = new GreedManager(initializePlayers(console));
+        int round = 1;
         boolean isNextRound = false;
         do {
-            String winner = playOneRound(console, game);
+            playOneRound(console, game);
+            displayLeaderboard(round, game);
+            isNextRound = continueGame(console);
+            round++;
         } while (isNextRound);
+
+        displayWinners(game);
     }
 
     public static void intro() {
@@ -24,19 +31,21 @@ public class GreedMain {
     }
 
     public static Set<String> initializePlayers(Scanner console) {
-        System.out.print("How many players will be playing? ");
-        int numOfPlayers = console.nextInt();
+        System.out.print("How many players will be playing? (input an integer): ");
+        int numOfPlayers = console.nextInt(); // console.nextInt() does need read newline character
+        console.nextLine();
         while (numOfPlayers < 2) {
             System.out.println("Please answer with 2 or more players.");
-            System.out.print("How many players will be playing? ");
+            System.out.print("How many players will be playing? (input an integer): ");
             numOfPlayers = console.nextInt();
+            console.nextLine();
         }
 
         Set<String> playerNames = new HashSet<>();
         for (int i = 0; i < numOfPlayers; i++) {
             System.out.print("What is the name of player " + (i + 1) + "? ");
             String playerName = console.nextLine();
-            while (!playerNames.contains(playerName)) {
+            while (playerNames.contains(playerName)) {
                 System.out.println("Please answer with a name that doesn't already exist.");
                 System.out.print("What is the name of player " + (i + 1) + "? ");
                 playerName = console.nextLine();
@@ -47,37 +56,59 @@ public class GreedMain {
         return playerNames;
     }
 
-    public static String playOneRound(Scanner console, GreedManager game) {
+    public static void playOneRound(Scanner console, GreedManager game) {
         for (String playerName : game.getPlayerNames()) {
             System.out.println("It is " + playerName + "'s turn! ");
 
-            int[] diceValues = new int[game.SIDES];
-            for (int i = 0; i < game.DICE_COUNT; i++) {
-                System.out.println("Dice " + (i + 1) + " value: ");
+            int[] diceValues = new int[GreedManager.DICE_COUNT];
+            for (int i = 0; i < GreedManager.DICE_COUNT; i++) {
+                System.out.print("Dice " + (i + 1) + " value: ");
                 int diceValue = console.nextInt();
-                while (diceValue <= 0 || game.SIDES < diceValue) {
+                console.nextLine();
+                while (diceValue <= 0 || GreedManager.SIDES < diceValue) {
                     System.out.println("A roll of " + diceValue + " is not possible!");
                     System.out.println("Please input a valid value.");
-                    System.out.println("Dice " + (i + 1) + " value: ");
+                    System.out.print("Dice " + (i + 1) + " value: ");
                     diceValue = console.nextInt();
+                    console.nextLine();
                 }
                 diceValues[i] = diceValue;
             }
 
             game.put(playerName, diceValues);
         }
-
-        return null;
     }
 
-//    public boolean yesTo(String prompt) {
-//        System.out.print(prompt + " (y/n)? ");
-//        String response = console.nextLine().trim().toLowerCase();
-//        while (!response.equals("y") && !response.equals("n")) {
-//            System.out.println("Please answer y or n.");
-//            System.out.print(prompt + " (y/n)? ");
-//            response = console.nextLine().trim().toLowerCase();
-//        }
-//        return response.equals("y");
-//    }
+    public static void displayLeaderboard(int round, GreedManager game) {
+        System.out.println("Round " + round + " has finished!");
+        System.out.println("LEADEBOARD");
+        System.out.println("----------------------------------");
+        String leaderboard = game.getLeadboard();
+        leaderboard = leaderboard.substring(1, leaderboard.length() - 1);
+        String[] players = leaderboard.split(",");
+        for (int i = 0; i < players.length; i++) {
+            System.out.println((i + 1) + ". " + players[i].trim());
+        }
+    }
+
+    public static void displayWinners(GreedManager game) {
+        List<String> winners = game.getWinners();
+        StringBuilder sb = new StringBuilder();
+        System.out.println("THE WINNERS OF THIS GAME OF GREED ARE");
+        System.out.println("----------------------------------");
+        sb.append(winners.get(0));
+        for (int i = 1; i < winners.size(); i++) {
+            sb.append(", " + winners.get(i));
+        }
+        System.out.println(sb);
+    }
+
+    private static boolean continueGame(Scanner console) {
+        System.out.println("Would you like to play another round?");
+        System.out.println ("Enter (q) to quit game ");
+        System.out.print("Enter any other input to continue ");
+        String response = console.nextLine().trim().toLowerCase();
+        System.out.println();
+        return !response.equals("q");
+    }
 }
