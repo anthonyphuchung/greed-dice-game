@@ -24,40 +24,40 @@ public class GreedManagerTest {
     public void testScores1() {
         int[] scores = new int[] {1, 1, 1, 1, 1};
         game.put("player 1", scores);
-        assertEquals(game.getScore("player 1"), 1200);
+        assertEquals(game.get("player 1"), 1200);
     }
 
     @Test
     public void testScores2() {
         int[] scores = new int[] {1, 1, 1, 5, 1};
         game.put("player 2", scores);
-        assertEquals(game.getScore("player 2"), 1150);
+        assertEquals(game.get("player 2"), 1150);
     }
 
     @Test
     public void testScores3() {
         int[] scores = new int[] {2, 3, 4, 6, 2};
         game.put("player 3", scores);
-        assertEquals(game.getScore("player 3"), 0);
+        assertEquals(game.get("player 3"), 0);
     }
 
     @Test
     public void testScores4() {
         int[] scores = new int[] {3, 4, 5, 3, 3};
         game.put("player 4", scores);
-        assertEquals(game.getScore("player 4"), 350);
+        assertEquals(game.get("player 4"), 350);
     }
 
     @Test
     public void testScores5() {
         int[] scores = new int[] {6, 5, 6, 5, 4};
         game.put("player 5", scores);
-        assertEquals(game.getScore("player 5"), 100);
+        assertEquals(game.get("player 5"), 100);
     }
 
     @Test
     public void testScores6() {
-        assertEquals(game.getScore("unknown player"), -1);
+        assertEquals(game.get("unknown player"), -1);
     }
 
     @Test (expected = IndexOutOfBoundsException.class)
@@ -125,7 +125,7 @@ public class GreedManagerTest {
         game.put("player 5", scores);
         game.resetGame();
         for (String name : names) {
-            assertEquals(game.getScore(name), 0);
+            assertEquals(game.get(name), 0);
         }
     }
 

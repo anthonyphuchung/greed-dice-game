@@ -96,7 +96,7 @@ public class GreedManager {
      * @param playerName - the name of the given player.
      * @return the score of the given player if they exist within the game. Otherwise, return -1.
      */
-    public int getScore(String playerName) {
+    public int get(String playerName) {
         if (!isValidPlayer(playerName)) {
             return -1;
         }
