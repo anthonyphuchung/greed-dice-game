@@ -6,11 +6,12 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 public class GreedManagerTest {
+    public static final int PLAYER_COUNT = 5;
     private GreedManager game;
 
     public GreedManagerTest() {
         Set<String> names = new HashSet<>();
-        for (int i = 1; i <= 4; i++) {
+        for (int i = 1; i <= PLAYER_COUNT; i++) {
             names.add("player " + i);
         }
         game = new GreedManager(names);
@@ -42,5 +43,12 @@ public class GreedManagerTest {
         int[] scores = new int[] {3, 4, 5, 3, 3};
         game.put("player 4", scores);
         assertEquals(game.get("player 4"), 350);
+    }
+
+    @Test
+    public void testScores5() {
+        int[] scores = new int[] {1, 1, 1, 1, 1};
+        game.put("player 5", scores);
+        assertEquals(game.get("player 5"), 1200);
     }
 }
