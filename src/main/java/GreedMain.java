@@ -84,6 +84,7 @@ public class GreedMain {
         for (String playerName : game.getPlayerNames()) {
             System.out.println("It is " + playerName + "'s turn! ");
 
+
             int[] diceValues = new int[GreedManager.DICE_COUNT];
             for (int i = 0; i < GreedManager.DICE_COUNT; i++) {
                 System.out.print("Dice " + (i + 1) + " value: ");
