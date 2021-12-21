@@ -45,5 +45,9 @@ just put the player that we just updated in the correct position in the leaderbo
 be optimal for since it's add/remove operations are in constant time. Additionally, using a HashMap will allow us to
 return the score in constant time since the player's names are mapped to their Player object.
 
+### Next steps
+Some next steps I would like to take this is to create a front-end application so that users can interact with
+a GUI instead of the console.
+
 ## Acknowledgments
 * [ardalis](https://github.com/ardalis/kata-catalog)
