@@ -1,3 +1,9 @@
+/**
+ * Author: Anthony Chung
+ *
+ * This program tests the methods within GreedManager.java.
+ */
+
 import org.junit.*;
 
 import java.util.HashSet;

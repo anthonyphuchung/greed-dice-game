@@ -162,9 +162,10 @@ public class GreedManager {
     }
 
     /**
+     * Returns the occurences of the given dice values
      *
-     * @param diceValues
-     * @return
+     * @param diceValues - the given dice values.
+     * @return - the occurences of the given dice values.
      */
     private int[] getOccurences(int[] diceValues) {
         int[] valueCount = new int[SIDES];
@@ -177,6 +178,11 @@ public class GreedManager {
         return valueCount;
     }
 
+    /**
+     * Updates the leaderboard by putting the given playerName and their score in the correct position.
+     * @param playerName - the given player
+     * @param score - the score of the player
+     */
     private void updateLeaderboard(String playerName, int score) {
         int playerIndex = indexOf(playerName);
         Player player = players.get(playerIndex);
@@ -184,17 +190,19 @@ public class GreedManager {
         Collections.sort(players);
     }
 
+    /**
+     * Evaluate the score by using the scoring method of the game.
+     * @param roll - the given roll value.
+     * @param valueCount - the occurence of each roll value.
+     * @return - the score by using the scoring mehtod of the game.
+     */
     private int evaluateScore(int roll, int[] valueCount) {
         int numOfTriples = valueCount[roll] / 3;
         int remainder = valueCount[roll] - (numOfTriples * 3);
         if (roll == 0) { // Roll of one
             return (1000 * numOfTriples) + (100 * remainder);
         } else if (roll == 1) { // Roll of two
-            int score = (200 * numOfTriples);
-            if (numOfTriples == 1 && remainder == 1) {
-                score += 200;
-            }
-            return score;
+            return (200 * numOfTriples);
         } else if (roll == 2) { // Roll of three
             return (300 * numOfTriples);
         } else if (roll == 3) { // Roll of four
